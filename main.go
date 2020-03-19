@@ -11,10 +11,14 @@ import (
 func main() {
 	t := tokenizer.New()
 	scanner := bufio.NewScanner(os.Stdin)
+	words := map[string]struct{}{}
 	for scanner.Scan() {
 		for _, token := range t.Tokenize(scanner.Text()) {
 			if token.Class != tokenizer.DUMMY {
-				fmt.Println(token.Surface)
+				if _, ok := words[token.Surface]; !ok {
+					fmt.Println(token.Surface)
+					words[token.Surface] = struct{}{}
+				}
 			}
 		}
 	}
